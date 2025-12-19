@@ -1,9 +1,12 @@
 package com.example.demo.util;
 
 import com.example.demo.model.*;
-import java.util.*;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 import java.util.regex.Pattern;
 
+@Component   // ✅ THIS IS THE FIX
 public class InvoiceCategorizationEngine {
 
     public Category determineCategory(
@@ -29,6 +32,7 @@ public class InvoiceCategorizationEngine {
                 case "REGEX":
                     if (Pattern.compile(key).matcher(desc).find())
                         return rule.getCategory();
+                    break;
             }
         }
         return null;
