@@ -23,5 +23,27 @@ public class CategorizationRule {
         this.createdAt = LocalDateTime.now();
     }
 
-    // getters & setters
+    public Long getId() {
+        return id;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public String getMatchType() {
+        return matchType;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
 }

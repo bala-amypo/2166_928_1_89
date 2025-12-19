@@ -34,5 +34,27 @@ public class Invoice {
         this.uploadedAt = LocalDateTime.now();
     }
 
-    // getters & setters
+    public Long getId() {
+        return id;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setUploadedBy(User uploadedBy) {
+        this.uploadedBy = uploadedBy;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
