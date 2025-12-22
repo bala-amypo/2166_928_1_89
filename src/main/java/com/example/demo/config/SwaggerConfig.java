@@ -11,15 +11,17 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    @Bean
-    public OpenAPI api() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("Smart Invoice Categorization API")
-                        .version("1.0")
-                        .description("Invoice categorization using rules"))
-                .servers(List.of(
-                        new Server().url("https://9563.pro604cr.amypo.ai/")
-                ));
-    }
+   @Bean
+public OpenAPI api() {
+    return new OpenAPI()
+            .info(new Info()
+                    .title("Smart Invoice Categorization API")
+                    .version("1.0")
+                    .description("Invoice categorization using rules"))
+            .servers(List.of(
+                    new Server().url("http://localhost:9001"),
+                    new Server().url("https://9563.pro604cr.amypo.ai")
+            ));
+}
+
 }
