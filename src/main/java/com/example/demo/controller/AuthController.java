@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")   // ✅ REQUIRED for Swagger/browser
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final JwtUtil jwtUtil;
@@ -24,7 +24,6 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
 
-        // ✅ SIMPLE LOGIN FLOW (NO SPRING SECURITY AUTH YET)
         User user = userService.findByEmail(request.getEmail());
 
         String token = jwtUtil.generateToken(user.getEmail(), user);
