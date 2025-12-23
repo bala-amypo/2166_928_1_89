@@ -3,11 +3,14 @@ package com.example.demo.controller;
 import com.example.demo.model.Category;
 import com.example.demo.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
+@CrossOrigin
 public class CategoryController {
+
     private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
@@ -15,17 +18,17 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category create(@RequestBody Category category) {
+    public Category createCategory(@RequestBody Category category) {
         return categoryService.createCategory(category);
     }
 
     @GetMapping
-    public List<Category> getAll() {
+    public List<Category> getAllCategories() {
         return categoryService.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public Category getOne(@PathVariable Long id) {
+    public Category getCategory(@PathVariable Long id) {
         return categoryService.getCategory(id);
     }
 }
