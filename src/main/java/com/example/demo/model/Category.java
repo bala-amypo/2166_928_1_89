@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,13 +12,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Category {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, unique = true)
     private String categoryName;
+
     private String description;
+
     private LocalDateTime createdAt;
-    @PrePersist protected void onCreate() {
+
+    @PrePersist
+    protected void onCreate() {
         if (createdAt == null) createdAt = LocalDateTime.now();
     }
 }
