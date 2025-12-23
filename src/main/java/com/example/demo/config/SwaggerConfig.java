@@ -20,7 +20,7 @@ public OpenAPI api() {
                     .description("Invoice categorization using rules"))
             .servers(List.of(
                     new Server().url("http://localhost:9001"),
-                    new Server().url("https://9563.pro604cr.amypo.ai")
+                    new Server().url("https://9180.408procr.amypo.ai/")
             ));
 }
 
