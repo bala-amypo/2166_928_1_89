@@ -24,7 +24,6 @@ public class SwaggerConfig {
                         new Server().url("http://localhost:9001"),
                         new Server().url("https://9180.408procr.amypo.ai/")
                 ))
-                // Keeping the security configuration so JWT authentication works in Swagger
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes("bearerAuth",

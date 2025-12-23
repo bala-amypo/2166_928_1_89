@@ -3,13 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.model.Vendor;
 import com.example.demo.service.VendorService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/vendors")
 public class VendorController {
-
     private final VendorService vendorService;
 
     public VendorController(VendorService vendorService) {
@@ -17,17 +15,17 @@ public class VendorController {
     }
 
     @PostMapping
-    public Vendor createVendor(@RequestBody Vendor vendor) {
+    public Vendor create(@RequestBody Vendor vendor) {
         return vendorService.createVendor(vendor);
     }
 
     @GetMapping
-    public List<Vendor> getAllVendors() {
+    public List<Vendor> getAll() {
         return vendorService.getAllVendors();
     }
 
-    @GetMapping("/{vendorId}")
-    public Vendor getVendor(@PathVariable Long vendorId) {
-        return vendorService.getVendor(vendorId);
+    @GetMapping("/{id}")
+    public Vendor getOne(@PathVariable Long id) {
+        return vendorService.getVendor(id);
     }
 }
