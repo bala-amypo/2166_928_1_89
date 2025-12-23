@@ -1,60 +1,32 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    uniqueConstraints = @UniqueConstraint(columnNames = {"vendor_id", "invoiceNumber"})
-)
+@Table(name = "invoices", uniqueConstraints = {@UniqueConstraint(columnNames = {"vendor_id", "invoiceNumber"})})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Invoice {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
+    @ManyToOne(optional = false) @JoinColumn(name = "vendor_id")
     private Vendor vendor;
-
+    @Column(nullable = false)
     private String invoiceNumber;
+    @Column(nullable = false)
     private Double amount;
     private LocalDateTime invoiceDate;
     private String description;
-
-    @ManyToOne
+    @ManyToOne @JoinColumn(name = "category_id")
     private Category category;
-
-    @ManyToOne
+    @ManyToOne(optional = false) @JoinColumn(name = "uploaded_by_id")
     private User uploadedBy;
-
     private LocalDateTime uploadedAt;
-
-    @PrePersist
-    void prePersist() {
-        this.uploadedAt = LocalDateTime.now();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setUploadedBy(User uploadedBy) {
-        this.uploadedBy = uploadedBy;
-    }
-
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
+    @PrePersist protected void onCreate() {
+        if (uploadedAt == null) uploadedAt = LocalDateTime.now();
     }
 }
