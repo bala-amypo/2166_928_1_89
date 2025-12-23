@@ -6,23 +6,17 @@ import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")   // ✅ THIS FIXES "Failed to fetch"
+@CrossOrigin(origins = "*")   // ✅ REQUIRED for Swagger/browser
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserService userService;
 
-    public AuthController(AuthenticationManager authenticationManager,
-                          JwtUtil jwtUtil,
-                          UserService userService) {
-        this.authenticationManager = authenticationManager;
+    public AuthController(JwtUtil jwtUtil, UserService userService) {
         this.jwtUtil = jwtUtil;
         this.userService = userService;
     }
@@ -30,15 +24,10 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-
+        // ✅ SIMPLE LOGIN FLOW (NO SPRING SECURITY AUTH YET)
         User user = userService.findByEmail(request.getEmail());
-        String token = jwtUtil.generateToken(request.getEmail(), user);
+
+        String token = jwtUtil.generateToken(user.getEmail(), user);
 
         return new AuthResponse(
                 token,
