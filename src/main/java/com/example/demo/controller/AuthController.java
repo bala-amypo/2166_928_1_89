@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")   // ✅ THIS FIXES "Failed to fetch"
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
