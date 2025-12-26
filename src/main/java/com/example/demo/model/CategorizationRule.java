@@ -4,44 +4,30 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "categorization_rules")
 public class CategorizationRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Category category;
-
     private String keyword;
 
-    // ⚠️ MUST BE STRING (tests pass String values)
-    private String matchType;
+    @Enumerated(EnumType.STRING)
+    private MatchType matchType;
 
     private Integer priority;
 
-    private LocalDateTime createdAt;
+    @ManyToOne
+    private Category category;
 
-    public CategorizationRule() {
-    }
+    private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ---------- getters ----------
-    public Long getId() { return id; }
-    public Category getCategory() { return category; }
     public String getKeyword() { return keyword; }
-    public String getMatchType() { return matchType; }
-    public Integer getPriority() { return priority; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-
-    // ---------- setters ----------
-    public void setCategory(Category category) { this.category = category; }
-    public void setKeyword(String keyword) { this.keyword = keyword; }
-    public void setMatchType(String matchType) { this.matchType = matchType; }
-    public void setPriority(Integer priority) { this.priority = priority; }
+    public MatchType getMatchType() { return matchType; }
+    public Category getCategory() { return category; }
 }
