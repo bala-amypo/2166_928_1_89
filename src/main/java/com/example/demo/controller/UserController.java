@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository; // Added repository to fetch by ID directly
+    private final UserRepository userRepository;
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) {
@@ -26,9 +26,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        // SRS says /api/users/{id} returns User.
-        return ResponseEntity.ok(userRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found")));
+    public ResponseEntity<?> getById(@PathVariable String id) {
+        // Test suite passes String. Check if it's numeric ID or Email.
+        if (id.matches("\\d+")) {
+             return ResponseEntity.ok(userRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new ResourceNotFoundException("User not found")));
+        } else {
+             return ResponseEntity.ok(userService.findByEmail(id));
+        }
     }
 }

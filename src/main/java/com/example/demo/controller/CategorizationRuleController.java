@@ -1,23 +1,30 @@
 package com.example.demo.controller;
-import com.example.demo.model.CategorizationRule; // Corrected Import
+
+import com.example.demo.model.CategorizationRule;
 import com.example.demo.service.CategorizationRuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-@RestController @RequestMapping("/api/rules") @RequiredArgsConstructor
+
+@RestController
+@RequestMapping("/api/rules")
+@RequiredArgsConstructor
 public class CategorizationRuleController {
     private final CategorizationRuleService ruleService;
+
     @PostMapping("/category/{categoryId}")
-    public ResponseEntity<CategorizationRule> create(@PathVariable Long categoryId, @RequestBody CategorizationRule rule) {
-        return ResponseEntity.ok(ruleService.createRule(categoryId, rule));
+    public ResponseEntity<CategorizationRule> create(@PathVariable String categoryId, @RequestBody CategorizationRule rule) {
+        return ResponseEntity.ok(ruleService.createRule(Long.valueOf(categoryId), rule));
     }
+
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<?> getByCat(@PathVariable Long categoryId) {
-        return ResponseEntity.ok(ruleService.getRulesByCategory(categoryId));
+    public ResponseEntity<?> getByCat(@PathVariable String categoryId) {
+        return ResponseEntity.ok(ruleService.getRulesByCategory(Long.valueOf(categoryId)));
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        ruleService.deleteRule(id);
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        ruleService.deleteRule(Long.valueOf(id));
         return ResponseEntity.noContent().build();
     }
 }

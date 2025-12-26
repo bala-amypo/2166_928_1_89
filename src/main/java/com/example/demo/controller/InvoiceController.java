@@ -1,26 +1,36 @@
 package com.example.demo.controller;
-import com.example.demo.model.Invoice; // Corrected Import
+
+import com.example.demo.model.Invoice;
 import com.example.demo.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-@RestController @RequestMapping("/api/invoices") @RequiredArgsConstructor
+
+@RestController
+@RequestMapping("/api/invoices")
+@RequiredArgsConstructor
 public class InvoiceController {
     private final InvoiceService invoiceService;
+
     @PostMapping("/upload/{userId}/{vendorId}")
-    public ResponseEntity<Invoice> uploadInvoice(@PathVariable Long userId, @PathVariable Long vendorId, @RequestBody Invoice invoice) {
-        return ResponseEntity.ok(invoiceService.uploadInvoice(userId, vendorId, invoice));
+    public ResponseEntity<Invoice> uploadInvoice(@PathVariable String userId, 
+                                                 @PathVariable String vendorId, 
+                                                 @RequestBody Invoice invoice) {
+        return ResponseEntity.ok(invoiceService.uploadInvoice(Long.valueOf(userId), Long.valueOf(vendorId), invoice));
     }
+
     @PostMapping("/categorize/{invoiceId}")
-    public ResponseEntity<Invoice> categorizeInvoice(@PathVariable Long invoiceId) {
-        return ResponseEntity.ok(invoiceService.categorizeInvoice(invoiceId));
+    public ResponseEntity<Invoice> categorizeInvoice(@PathVariable String invoiceId) {
+        return ResponseEntity.ok(invoiceService.categorizeInvoice(Long.valueOf(invoiceId)));
     }
+
     @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUserInvoices(@PathVariable Long userId) {
-        return ResponseEntity.ok(invoiceService.getInvoicesByUser(userId));
+    public ResponseEntity<?> getUserInvoices(@PathVariable String userId) {
+        return ResponseEntity.ok(invoiceService.getInvoicesByUser(Long.valueOf(userId)));
     }
+
     @GetMapping("/{invoiceId}")
-    public ResponseEntity<Invoice> getInvoice(@PathVariable Long invoiceId) {
-        return ResponseEntity.ok(invoiceService.getInvoice(invoiceId));
+    public ResponseEntity<Invoice> getInvoice(@PathVariable String invoiceId) {
+        return ResponseEntity.ok(invoiceService.getInvoice(Long.valueOf(invoiceId)));
     }
 }
