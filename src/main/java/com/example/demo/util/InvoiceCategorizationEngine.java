@@ -1,25 +1,67 @@
 package com.example.demo.util;
-import com.example.demo.model.CategorizationRule; // Corrected Import
-import com.example.demo.model.Category; // Corrected Import
-import com.example.demo.model.Invoice; // Corrected Import
-import org.springframework.stereotype.Component;
+
+import com.example.demo.model.Category;
+import com.example.demo.model.CategorizationRule;
+import com.example.demo.model.Invoice;
+import com.example.demo.model.MatchType;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
-@Component
+
 public class InvoiceCategorizationEngine {
-    public Category determineCategory(Invoice invoice, List<CategorizationRule> rules) {
-        if (invoice.getDescription() == null) return null;
-        for (CategorizationRule rule : rules) {
-            boolean match = false;
-            String desc = invoice.getDescription();
-            String keyword = rule.getKeyword();
-            switch (rule.getMatchType().toUpperCase()) {
-                case "EXACT": match = desc.equalsIgnoreCase(keyword); break;
-                case "CONTAINS": match = desc.toLowerCase().contains(keyword.toLowerCase()); break;
-                case "REGEX": match = Pattern.compile(keyword).matcher(desc).find(); break;
-            }
-            if (match) return rule.getCategory();
+
+    public Category determineCategory(
+            Invoice invoice,
+            List<CategorizationRule> rules
+    ) {
+
+        if (invoice == null || rules == null || rules.isEmpty()) {
+            return null;
         }
-        return null;
+
+        String description = invoice.getDescription();
+        if (description == null) {
+            return null;
+        }
+
+        return rules.stream()
+                .sorted(Comparator.comparing(
+                        CategorizationRule::getPriority
+                ).reversed())
+                .filter(rule -> matches(rule, description))
+                .map(CategorizationRule::getCategory)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private boolean matches(
+            CategorizationRule rule,
+            String description
+    ) {
+
+        if (rule.getKeyword() == null ||
+            rule.getMatchType() == null) {
+            return false;
+        }
+
+        String keyword = rule.getKeyword();
+
+        MatchType type = rule.getMatchType();
+
+        return switch (type) {
+
+            case EXACT ->
+                description.equalsIgnoreCase(keyword);
+
+            case CONTAINS ->
+                description.toLowerCase()
+                        .contains(keyword.toLowerCase());
+
+            case REGEX ->
+                Pattern.compile(keyword)
+                        .matcher(description)
+                        .find();
+        };
     }
 }
