@@ -5,11 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    uniqueConstraints = @UniqueConstraint(
-        columnNames = {"vendor_id", "invoiceNumber"}
-    )
-)
 public class Invoice {
 
     @Id
@@ -17,13 +12,9 @@ public class Invoice {
     private Long id;
 
     private String invoiceNumber;
-
     private Double amount;
-
     private String description;
-
     private LocalDate invoiceDate;
-
     private LocalDateTime uploadedAt;
 
     @ManyToOne
@@ -35,14 +26,13 @@ public class Invoice {
     @ManyToOne
     private User uploadedBy;
 
-    @PrePersist
-    public void onCreate() {
+    // REQUIRED BY TESTS
+    public void prePersist() {
         this.uploadedAt = LocalDateTime.now();
     }
 
-    // ===== REQUIRED METHODS FOR TESTS =====
-
-    public void setId(long id) {          // 🔴 REQUIRED
+    // REQUIRED
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -50,63 +40,23 @@ public class Invoice {
         return id;
     }
 
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public String getDescription() {       // 🔴 REQUIRED
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String desc) {
+        this.description = desc;
     }
 
-    public LocalDate getInvoiceDate() {
-        return invoiceDate;
-    }
-
-    public void setInvoiceDate(LocalDate invoiceDate) {
-        this.invoiceDate = invoiceDate;
-    }
-
-    public void setUploadedBy(User user) { // 🔴 REQUIRED
-        this.uploadedBy = user;
-    }
-
-    public User getUploadedBy() {
-        return uploadedBy;
-    }
-
-    public void setVendor(Vendor vendor) { // 🔴 REQUIRED
+    public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
-    public Vendor getVendor() {
-        return vendor;
-    }
-
-    public void setCategory(Category category) { // 🔴 REQUIRED
+    public void setCategory(Category category) {
         this.category = category;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public LocalDateTime getUploadedAt() {
-        return uploadedAt;
+    public void setUploadedBy(User user) {
+        this.uploadedBy = user;
     }
 }

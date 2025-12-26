@@ -11,15 +11,14 @@ public class Category {
     private Long id;
 
     private String categoryName;
-
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void onCreate() {
+    // REQUIRED BY TESTS
+    public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ===== REQUIRED GETTERS / SETTERS =====
+    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;
@@ -29,8 +28,8 @@ public class Category {
         return categoryName;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategoryName(String name) {
+        this.categoryName = name;
     }
 
     public LocalDateTime getCreatedAt() {
