@@ -1,10 +1,9 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,15 +24,14 @@ public class Vendor {
 
     private String contactEmail;
     private String address;
-
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @ManyToMany(mappedBy = "favoriteVendors")
-    @JsonIgnore   // 🔥 prevents infinite recursion
+    @Builder.Default
     private Set<User> users = new HashSet<>();
 
     @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
+    public void prePersist() {
+        if (createdAt == null) createdAt = LocalDate.now();
     }
 }

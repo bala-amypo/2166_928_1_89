@@ -3,7 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "categories")
@@ -21,11 +21,10 @@ public class Category {
     private String categoryName;
 
     private String description;
-
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
+    public void prePersist() {
+        if (createdAt == null) createdAt = LocalDate.now();
     }
 }

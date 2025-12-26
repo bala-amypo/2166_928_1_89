@@ -3,7 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "categorization_rules")
@@ -17,23 +17,25 @@ public class CategorizationRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "category_id")
+    @ManyToOne
     private Category category;
 
     @Column(nullable = false)
     private String keyword;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private MatchType matchType;
 
     private int priority;
-
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
+    public void prePersist() {
+        if (createdAt == null) createdAt = LocalDate.now();
+    }
+
+    // REQUIRED BY TESTS
+    public void setMatchType(String value) {
+        this.matchType = MatchType.fromString(value);
     }
 }

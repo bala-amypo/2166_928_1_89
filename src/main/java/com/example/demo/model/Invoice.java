@@ -3,14 +3,12 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(
-    name = "invoices",
-    uniqueConstraints = @UniqueConstraint(
-        columnNames = {"vendor_id", "invoiceNumber"}
-    )
+        name = "invoices",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"vendor_id", "invoiceNumber"})
 )
 @Data
 @NoArgsConstructor
@@ -22,7 +20,7 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
@@ -32,22 +30,19 @@ public class Invoice {
     @Column(nullable = false)
     private Double amount;
 
-    private LocalDateTime invoiceDate;
-
+    private LocalDate invoiceDate;
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "uploaded_by_id")
+    @ManyToOne
     private User uploadedBy;
 
-    private LocalDateTime uploadedAt;
+    private LocalDate uploadedAt;
 
     @PrePersist
-    protected void onCreate() {
-        if (uploadedAt == null) uploadedAt = LocalDateTime.now();
+    public void prePersist() {
+        if (uploadedAt == null) uploadedAt = LocalDate.now();
     }
 }

@@ -1,17 +1,16 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(
-    name = "users",
-    uniqueConstraints = @UniqueConstraint(columnNames = "email")
+        name = "users",
+        uniqueConstraints = @UniqueConstraint(columnNames = "email")
 )
 @Data
 @NoArgsConstructor
@@ -28,25 +27,25 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @JsonIgnore   // 🔥 NEVER expose password
     @Column(nullable = false)
     private String password;
 
     private String role;
 
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "user_favorite_vendors",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "vendor_id")
+            name = "user_favorite_vendors",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "vendor_id")
     )
+    @Builder.Default
     private Set<Vendor> favoriteVendors = new HashSet<>();
 
     @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
+    public void prePersist() {
+        if (createdAt == null) createdAt = LocalDate.now();
         if (role == null) role = "USER";
     }
 }
