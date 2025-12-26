@@ -4,59 +4,51 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <!-- ===============================
-         PROJECT META
-    ================================ -->
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.4</version>
-        <relativePath/>
     </parent>
 
     <groupId>com.example</groupId>
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Smart Invoice Categorization API</name>
-    <description>Invoice categorization using rules</description>
 
     <properties>
         <java.version>17</java.version>
     </properties>
 
-    <!-- ===============================
-         DEPENDENCIES
-    ================================ -->
     <dependencies>
 
-        <!-- Spring Web -->
+        <!-- Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Data JPA -->
+        <!-- JPA -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- Spring Security -->
+        <!-- Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- MySQL / MariaDB Driver -->
+        <!-- Database -->
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Swagger / OpenAPI -->
+        <!-- Swagger -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -90,18 +82,16 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Testing -->
+        <!-- ✅ TestNG (CRITICAL) -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.8.0</version>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
 
-    <!-- ===============================
-         BUILD
-    ================================ -->
     <build>
         <plugins>
 
@@ -109,6 +99,16 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- ✅ Surefire TestNG Binding -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <testNGArtifactName>org.testng:testng</testNGArtifactName>
+                </configuration>
             </plugin>
 
         </plugins>
