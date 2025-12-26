@@ -1,60 +1,42 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.model.User;
-import com.example.demo.security.JwtUtil;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.entity.User;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
+    private final UserService userService;
+    private final JwtTokenProvider tokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private JwtUtil jwtUtil;
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
+        User user = User.builder()
+                .fullName(req.getFullName())
+                .email(req.getEmail())
+                .password(req.getPassword())
+                .role(req.getRole())
+                .build();
+        return ResponseEntity.ok(userService.registerUser(user));
+    }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
-
-        // 🔐 authenticate user
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-
-        // ✅ load UserDetails (IMPORTANT FIX)
-        UserDetails userDetails =
-                userDetailsService.loadUserByUsername(request.getEmail());
-
-        // ✅ load User entity
-        User user = userService.findByEmail(request.getEmail());
-
-        // ✅ generate JWT correctly
-        String token = jwtUtil.generateToken(userDetails, user);
-
-        return new AuthResponse(
-                token,
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
+    public ResponseEntity<?> login(@RequestBody LoginRequest req) {
+        User user = userService.findByEmail(req.getEmail());
+        if (passwordEncoder.matches(req.getPassword(), user.getPassword())) {
+            String token = tokenProvider.createToken(user.getId(), user.getEmail(), user.getRole());
+            return ResponseEntity.ok(Map.of("token", token));
+        }
+        return ResponseEntity.status(401).body("Invalid credentials");
     }
 }

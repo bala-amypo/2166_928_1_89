@@ -1,10 +1,10 @@
 package com.example.demo.util;
 
-import com.example.demo.model.*;
-
+import com.example.demo.entity.CategorizationRule;
+import com.example.demo.entity.Category;
+import com.example.demo.entity.Invoice;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -12,31 +12,28 @@ import java.util.regex.Pattern;
 public class InvoiceCategorizationEngine {
 
     public Category determineCategory(Invoice invoice, List<CategorizationRule> rules) {
-
-        if (invoice == null || invoice.getDescription() == null || rules == null) {
-            return null;
-        }
-
-        rules.sort(Comparator.comparingInt(CategorizationRule::getPriority).reversed());
-
+        if (invoice.getDescription() == null) return null;
+        
+        // Rules are expected to be passed in Priority Order (Descending)
         for (CategorizationRule rule : rules) {
+            boolean match = false;
             String desc = invoice.getDescription();
-            String key = rule.getKeyword();
+            String keyword = rule.getKeyword();
 
-            switch (rule.getMatchType()) {
-                case EXACT:
-                    if (desc.equals(key)) return rule.getCategory();
+            switch (rule.getMatchType().toUpperCase()) {
+                case "EXACT":
+                    match = desc.equalsIgnoreCase(keyword);
                     break;
+                case "CONTAINS":
+                    match = desc.toLowerCase().contains(keyword.toLowerCase());
+                    break;
+                case "REGEX":
+                    match = Pattern.compile(keyword).matcher(desc).find();
+                    break;
+            }
 
-                case CONTAINS:
-                    if (desc.toLowerCase().contains(key.toLowerCase()))
-                        return rule.getCategory();
-                    break;
-
-                case REGEX:
-                    if (Pattern.compile(key).matcher(desc).find())
-                        return rule.getCategory();
-                    break;
+            if (match) {
+                return rule.getCategory();
             }
         }
         return null;
