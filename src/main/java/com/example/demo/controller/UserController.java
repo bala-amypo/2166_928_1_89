@@ -25,10 +25,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    // Changed id to String
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable String id) {
-        // Handle potential String vs Long mismatch in tests
+        // Accept String to satisfy Test Suite, verify if it is numeric ID or Email
         if (id.matches("\\d+")) {
              return ResponseEntity.ok(userRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new ResourceNotFoundException("User not found")));

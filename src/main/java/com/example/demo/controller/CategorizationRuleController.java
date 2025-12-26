@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.*;
 public class CategorizationRuleController {
     private final CategorizationRuleService ruleService;
 
-    // Changed categoryId to String
     @PostMapping("/category/{categoryId}")
     public ResponseEntity<CategorizationRule> create(@PathVariable String categoryId, @RequestBody CategorizationRule rule) {
+        // Accept String, parse to Long
         return ResponseEntity.ok(ruleService.createRule(Long.valueOf(categoryId), rule));
     }
 
-    // Changed categoryId to String
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<?> getByCat(@PathVariable String categoryId) {
+        // Accept String, parse to Long
         return ResponseEntity.ok(ruleService.getRulesByCategory(Long.valueOf(categoryId)));
     }
 
-    // Changed id to String
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
+        // Accept String, parse to Long
         ruleService.deleteRule(Long.valueOf(id));
         return ResponseEntity.noContent().build();
     }
