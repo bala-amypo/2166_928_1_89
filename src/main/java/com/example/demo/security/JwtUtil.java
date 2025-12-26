@@ -15,7 +15,7 @@ public class JwtUtil {
     private static final String SECRET =
             "THIS_IS_A_DEMO_SECRET_KEY_FOR_JWT_TESTS_1234567890";
 
-    private static final long EXPIRATION = 86400000;
+    private static final long EXPIRATION = 86400000; // 24 hours
 
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
@@ -27,7 +27,8 @@ public class JwtUtil {
                 .setSubject(userDetails.getUsername())
                 .claim("userId", user.getId())
                 .claim("email", user.getEmail())
-                .claim("role", user.getRole().name())
+                // ⚠️ role is STRING, not enum
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(
                         new Date(System.currentTimeMillis() + EXPIRATION)

@@ -60,7 +60,8 @@ public class AuthController {
                 token,
                 user.getId(),
                 user.getEmail(),
-                user.getRole().name()
+                // ⚠️ role already STRING
+                user.getRole()
         );
     }
 }
