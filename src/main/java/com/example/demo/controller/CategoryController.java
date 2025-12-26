@@ -1,5 +1,5 @@
 package com.example.demo.controller;
-import com.example.demo.entity.Category;
+import com.example.demo.model.Category; // Corrected Import
 import com.example.demo.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

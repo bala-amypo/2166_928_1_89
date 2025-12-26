@@ -1,5 +1,5 @@
 package com.example.demo.controller;
-import com.example.demo.entity.CategorizationRule;
+import com.example.demo.model.CategorizationRule; // Corrected Import
 import com.example.demo.service.CategorizationRuleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

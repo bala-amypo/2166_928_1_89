@@ -1,5 +1,5 @@
 package com.example.demo.controller;
-import com.example.demo.entity.Invoice;
+import com.example.demo.model.Invoice; // Corrected Import
 import com.example.demo.service.InvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
