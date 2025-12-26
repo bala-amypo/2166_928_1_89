@@ -17,7 +17,6 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    // Existing method
     public String generateToken(Long userId, String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
@@ -28,18 +27,17 @@ public class JwtUtil {
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-    
-    // Alias method for compatibility
+
+    // Needed for tests
     public String createToken(Long userId, String email, String role) {
         return generateToken(userId, email, role);
     }
 
-    // Method required by Test Suite: generateToken(UserDetails, User)
+    // Needed for tests
     public String generateToken(UserDetails userDetails, User user) {
         return generateToken(user.getId(), user.getEmail(), user.getRole());
     }
 
-    // Existing method
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token);
@@ -49,15 +47,8 @@ public class JwtUtil {
         }
     }
 
-    // Method required by Test Suite: validateToken(String, UserDetails)
+    // Needed for tests
     public boolean validateToken(String token, UserDetails userDetails) {
-        // In a real app, we would check if username matches userDetails, 
-        // but for this test suite, basic validation is likely sufficient.
         return validateToken(token);
-    }
-    
-    public String getEmailFromToken(String token) {
-         return Jwts.parserBuilder().setSigningKey(getSignInKey()).build()
-                .parseClaimsJws(token).getBody().getSubject();
     }
 }

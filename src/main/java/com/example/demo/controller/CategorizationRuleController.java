@@ -14,19 +14,16 @@ public class CategorizationRuleController {
 
     @PostMapping("/category/{categoryId}")
     public ResponseEntity<CategorizationRule> create(@PathVariable String categoryId, @RequestBody CategorizationRule rule) {
-        // Fix: Parse String to Long
         return ResponseEntity.ok(ruleService.createRule(Long.valueOf(categoryId), rule));
     }
 
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<?> getByCat(@PathVariable String categoryId) {
-        // Fix: Parse String to Long
         return ResponseEntity.ok(ruleService.getRulesByCategory(Long.valueOf(categoryId)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
-        // Fix: Parse String to Long
         ruleService.deleteRule(Long.valueOf(id));
         return ResponseEntity.noContent().build();
     }

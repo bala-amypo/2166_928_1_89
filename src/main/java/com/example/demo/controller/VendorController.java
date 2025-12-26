@@ -24,7 +24,6 @@ public class VendorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Vendor> getOne(@PathVariable String id) {
-        // Fix: Parse String to Long
         return ResponseEntity.ok(vendorService.getVendor(Long.valueOf(id)));
     }
 }
