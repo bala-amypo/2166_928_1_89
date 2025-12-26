@@ -1,5 +1,5 @@
 package com.example.demo.service;
-import com.example.demo.entity.CategorizationRule;
+import com.example.demo.model.CategorizationRule; // Corrected Import
 import java.util.List;
 public interface CategorizationRuleService {
     CategorizationRule createRule(Long categoryId, CategorizationRule rule);

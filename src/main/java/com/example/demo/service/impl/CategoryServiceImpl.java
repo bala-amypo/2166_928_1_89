@@ -1,5 +1,5 @@
 package com.example.demo.service.impl;
-import com.example.demo.entity.Category;
+import com.example.demo.model.Category; // Corrected Import
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategoryService;

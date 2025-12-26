@@ -1,5 +1,5 @@
 package com.example.demo.service;
-import com.example.demo.entity.Invoice;
+import com.example.demo.model.Invoice; // Corrected Import
 import java.util.List;
 public interface InvoiceService {
     Invoice uploadInvoice(Long userId, Long vendorId, Invoice invoice);

@@ -1,5 +1,5 @@
 package com.example.demo.service;
-import com.example.demo.entity.Vendor;
+import com.example.demo.model.Vendor; // Corrected Import
 import java.util.List;
 public interface VendorService {
     Vendor createVendor(Vendor vendor);
