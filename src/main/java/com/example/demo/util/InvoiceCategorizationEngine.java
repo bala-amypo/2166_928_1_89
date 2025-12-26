@@ -3,7 +3,6 @@ package com.example.demo.util;
 import com.example.demo.model.Category;
 import com.example.demo.model.CategorizationRule;
 import com.example.demo.model.Invoice;
-import com.example.demo.model.MatchType;
 
 import java.util.Comparator;
 import java.util.List;
@@ -40,28 +39,29 @@ public class InvoiceCategorizationEngine {
             String description
     ) {
 
-        if (rule.getKeyword() == null ||
-            rule.getMatchType() == null) {
+        if (rule.getKeyword() == null || rule.getMatchType() == null) {
             return false;
         }
 
         String keyword = rule.getKeyword();
+        String type = rule.getMatchType().toUpperCase();
 
-        MatchType type = rule.getMatchType();
+        switch (type) {
 
-        return switch (type) {
+            case "EXACT":
+                return description.equalsIgnoreCase(keyword);
 
-            case EXACT ->
-                description.equalsIgnoreCase(keyword);
-
-            case CONTAINS ->
-                description.toLowerCase()
+            case "CONTAINS":
+                return description.toLowerCase()
                         .contains(keyword.toLowerCase());
 
-            case REGEX ->
-                Pattern.compile(keyword)
+            case "REGEX":
+                return Pattern.compile(keyword)
                         .matcher(description)
                         .find();
-        };
+
+            default:
+                return false;
+        }
     }
 }

@@ -22,8 +22,8 @@ public class User {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    // ⚠️ MUST BE STRING (tests expect String, not enum)
+    private String role;
 
     private LocalDateTime createdAt;
 
@@ -35,27 +35,30 @@ public class User {
     )
     private Set<Vendor> favoriteVendors = new HashSet<>();
 
-    public User() {}
+    public User() {
+    }
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
         if (this.role == null) {
-            this.role = Role.USER;
+            this.role = "USER";
         }
     }
 
+    // ---------- getters ----------
     public Long getId() { return id; }
     public String getFullName() { return fullName; }
     public String getEmail() { return email; }
     public String getPassword() { return password; }
-    public Role getRole() { return role; }
+    public String getRole() { return role; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public Set<Vendor> getFavoriteVendors() { return favoriteVendors; }
 
+    // ---------- setters ----------
     public void setId(Long id) { this.id = id; }
     public void setFullName(String fullName) { this.fullName = fullName; }
     public void setEmail(String email) { this.email = email; }
     public void setPassword(String password) { this.password = password; }
-    public void setRole(Role role) { this.role = role; }
+    public void setRole(String role) { this.role = role; }
 }

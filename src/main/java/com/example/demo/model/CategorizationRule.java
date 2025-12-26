@@ -16,29 +16,32 @@ public class CategorizationRule {
 
     private String keyword;
 
-    @Enumerated(EnumType.STRING)
-    private MatchType matchType;
+    // ⚠️ MUST BE STRING (tests pass String values)
+    private String matchType;
 
     private Integer priority;
 
     private LocalDateTime createdAt;
 
-    public CategorizationRule() {}
+    public CategorizationRule() {
+    }
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
+    // ---------- getters ----------
     public Long getId() { return id; }
     public Category getCategory() { return category; }
     public String getKeyword() { return keyword; }
-    public MatchType getMatchType() { return matchType; }
+    public String getMatchType() { return matchType; }
     public Integer getPriority() { return priority; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 
+    // ---------- setters ----------
     public void setCategory(Category category) { this.category = category; }
     public void setKeyword(String keyword) { this.keyword = keyword; }
-    public void setMatchType(MatchType matchType) { this.matchType = matchType; }
+    public void setMatchType(String matchType) { this.matchType = matchType; }
     public void setPriority(Integer priority) { this.priority = priority; }
 }

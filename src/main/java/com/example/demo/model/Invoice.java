@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(
     name = "invoices",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"vendor_id", "invoiceNumber"})
+    uniqueConstraints = @UniqueConstraint(
+        columnNames = {"vendor_id", "invoiceNumber"}
+    )
 )
 public class Invoice {
 
@@ -34,13 +36,15 @@ public class Invoice {
 
     private LocalDateTime uploadedAt;
 
-    public Invoice() {}
+    public Invoice() {
+    }
 
     @PrePersist
     public void prePersist() {
         this.uploadedAt = LocalDateTime.now();
     }
 
+    // ---------- getters ----------
     public Long getId() { return id; }
     public Vendor getVendor() { return vendor; }
     public String getInvoiceNumber() { return invoiceNumber; }
@@ -50,6 +54,10 @@ public class Invoice {
     public Category getCategory() { return category; }
     public User getUploadedBy() { return uploadedBy; }
     public LocalDateTime getUploadedAt() { return uploadedAt; }
+
+    // ---------- setters ----------
+    // ⚠️ REQUIRED BY TESTS
+    public void setId(Long id) { this.id = id; }
 
     public void setVendor(Vendor vendor) { this.vendor = vendor; }
     public void setInvoiceNumber(String invoiceNumber) { this.invoiceNumber = invoiceNumber; }
