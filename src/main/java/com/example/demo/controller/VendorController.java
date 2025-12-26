@@ -22,9 +22,9 @@ public class VendorController {
         return ResponseEntity.ok(vendorService.getAllVendors());
     }
 
-    // Fix: Changed Long to String
     @GetMapping("/{id}")
     public ResponseEntity<Vendor> getOne(@PathVariable String id) {
+        // Fix: Accept String -> Convert to Long
         return ResponseEntity.ok(vendorService.getVendor(Long.valueOf(id)));
     }
 }

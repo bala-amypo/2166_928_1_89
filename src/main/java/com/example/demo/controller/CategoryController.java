@@ -22,9 +22,9 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
-    // Fix: Changed Long to String
     @GetMapping("/{id}")
     public ResponseEntity<Category> getOne(@PathVariable String id) {
+        // Fix: Accept String -> Convert to Long
         return ResponseEntity.ok(categoryService.getCategory(Long.valueOf(id)));
     }
 }

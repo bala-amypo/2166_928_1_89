@@ -10,16 +10,14 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-
-    // Must be at least 32 chars for HS256
     private final String jwtSecret = "ThisIsAVeryStrongSecretKeyForTheDemoApplicationMustBe32Chars";
-    private final long jwtExpirationMs = 86400000; // 24 hours
+    private final long jwtExpirationMs = 86400000;
 
     private Key getSignInKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    // --- Standard Method used by your logic ---
+    // Standard method
     public String generateToken(Long userId, String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
@@ -31,18 +29,17 @@ public class JwtUtil {
                 .compact();
     }
 
-    // --- Alias Method: Required because AuthController calls 'createToken' ---
+    // Alias required by tests
     public String createToken(Long userId, String email, String role) {
         return generateToken(userId, email, role);
     }
 
-    // --- Overloaded Method: Required by the Test Suite ---
-    // The tests try to pass (UserDetails, User) directly
+    // Overload required by tests: generateToken(UserDetails, User)
     public String generateToken(UserDetails userDetails, User user) {
         return generateToken(user.getId(), user.getEmail(), user.getRole());
     }
 
-    // --- Standard Validation ---
+    // Standard method
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token);
@@ -52,15 +49,8 @@ public class JwtUtil {
         }
     }
 
-    // --- Overloaded Validation: Required by the Test Suite ---
-    // The tests try to pass (String, UserDetails)
+    // Overload required by tests: validateToken(String, UserDetails)
     public boolean validateToken(String token, UserDetails userDetails) {
-        // For this assignment, we rely on signature validation
         return validateToken(token);
     }
-    
-    public String getEmailFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSignInKey()).build()
-               .parseClaimsJws(token).getBody().getSubject();
-   }
 }

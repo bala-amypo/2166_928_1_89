@@ -12,29 +12,29 @@ import org.springframework.web.bind.annotation.*;
 public class InvoiceController {
     private final InvoiceService invoiceService;
 
-    // Fix: Changed Long to String for PathVariables
     @PostMapping("/upload/{userId}/{vendorId}")
     public ResponseEntity<Invoice> uploadInvoice(@PathVariable String userId, 
                                                  @PathVariable String vendorId, 
                                                  @RequestBody Invoice invoice) {
+        // Fix: Accept String -> Convert to Long
         return ResponseEntity.ok(invoiceService.uploadInvoice(Long.valueOf(userId), Long.valueOf(vendorId), invoice));
     }
 
-    // Fix: Changed Long to String for PathVariables
     @PostMapping("/categorize/{invoiceId}")
     public ResponseEntity<Invoice> categorizeInvoice(@PathVariable String invoiceId) {
+        // Fix: Accept String -> Convert to Long
         return ResponseEntity.ok(invoiceService.categorizeInvoice(Long.valueOf(invoiceId)));
     }
 
-    // Fix: Changed Long to String for PathVariables
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserInvoices(@PathVariable String userId) {
+        // Fix: Accept String -> Convert to Long
         return ResponseEntity.ok(invoiceService.getInvoicesByUser(Long.valueOf(userId)));
     }
 
-    // Fix: Changed Long to String for PathVariables
     @GetMapping("/{invoiceId}")
     public ResponseEntity<Invoice> getInvoice(@PathVariable String invoiceId) {
+        // Fix: Accept String -> Convert to Long
         return ResponseEntity.ok(invoiceService.getInvoice(Long.valueOf(invoiceId)));
     }
 }

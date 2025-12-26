@@ -25,13 +25,14 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    // Fix: Changed Long to String and added logic to check if it's an ID or Email
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable String id) {
+        // Check if the ID string is a number
         if (id.matches("\\d+")) {
              return ResponseEntity.ok(userRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new ResourceNotFoundException("User not found")));
         } else {
+             // If not a number, treat as Email
              return ResponseEntity.ok(userService.findByEmail(id));
         }
     }
