@@ -27,7 +27,43 @@ public class CategorizationRule {
         this.createdAt = LocalDateTime.now();
     }
 
-    public String getKeyword() { return keyword; }
-    public MatchType getMatchType() { return matchType; }
-    public Category getCategory() { return category; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public MatchType getMatchType() {
+        return matchType;
+    }
+
+    public void setMatchType(MatchType matchType) {
+        this.matchType = matchType;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {   // ✅ REQUIRED BY TESTS
+        this.category = category;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

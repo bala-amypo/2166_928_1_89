@@ -40,8 +40,67 @@ public class Invoice {
         this.uploadedAt = LocalDateTime.now();
     }
 
-    public Vendor getVendor() { return vendor; }
-    public User getUploadedBy() { return uploadedBy; }
-    public Category getCategory() { return category; }
-    public Double getAmount() { return amount; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public LocalDate getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public void setInvoiceDate(LocalDate invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
+
+    public String getDescription() {          // ✅ REQUIRED
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {    // ✅ REQUIRED
+        this.vendor = vendor;
+    }
+
+    public User getUploadedBy() {
+        return uploadedBy;
+    }
+
+    public void setUploadedBy(User uploadedBy) {   // ✅ REQUIRED
+        this.uploadedBy = uploadedBy;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {   // ✅ REQUIRED
+        this.category = category;
+    }
+
+    public LocalDateTime getUploadedAt() {
+        return uploadedAt;
+    }
 }

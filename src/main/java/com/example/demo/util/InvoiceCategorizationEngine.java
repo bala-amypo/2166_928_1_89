@@ -6,15 +6,23 @@ import java.util.List;
 public class InvoiceCategorizationEngine {
 
     public Category determineCategory(Invoice invoice, List<CategorizationRule> rules) {
+
+        String description = invoice.getDescription();
+
         for (CategorizationRule rule : rules) {
-            String desc = invoice.getDescription();
-            if (rule.getMatchType() == MatchType.EXACT && desc.equalsIgnoreCase(rule.getKeyword())) {
+
+            if (rule.getMatchType() == MatchType.EXACT &&
+                description.equalsIgnoreCase(rule.getKeyword())) {
                 return rule.getCategory();
             }
-            if (rule.getMatchType() == MatchType.CONTAINS && desc.toLowerCase().contains(rule.getKeyword().toLowerCase())) {
+
+            if (rule.getMatchType() == MatchType.CONTAINS &&
+                description.toLowerCase().contains(rule.getKeyword().toLowerCase())) {
                 return rule.getCategory();
             }
-            if (rule.getMatchType() == MatchType.REGEX && desc.matches(rule.getKeyword())) {
+
+            if (rule.getMatchType() == MatchType.REGEX &&
+                description.matches(rule.getKeyword())) {
                 return rule.getCategory();
             }
         }

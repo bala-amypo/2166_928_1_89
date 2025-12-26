@@ -7,7 +7,6 @@ import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,52 +15,41 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
     private final UserService userService;
 
-    public AuthController(
-            AuthenticationManager authenticationManager,
-            UserDetailsService userDetailsService,
-            JwtUtil jwtUtil,
-            UserService userService
-    ) {
+    public AuthController(AuthenticationManager authenticationManager,
+                          JwtUtil jwtUtil,
+                          UserDetailsService userDetailsService,
+                          UserService userService) {
         this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
         this.userService = userService;
     }
 
     @PostMapping("/login")
-    public AuthResponse login(
-            @RequestBody AuthRequest request
-    ) {
+    public AuthResponse login(@RequestBody AuthRequest request) {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
+                        request.getEmail(), request.getPassword()
                 )
         );
 
-        UserDetails userDetails =
-                userDetailsService.loadUserByUsername(
-                        request.getEmail()
-                );
+        var userDetails = userDetailsService.loadUserByUsername(request.getEmail());
 
-        User user = userService.findByEmail(
-                request.getEmail()
-        );
+        User user = new User();
+        user.setEmail(request.getEmail());
 
-        String token =
-                jwtUtil.generateToken(userDetails, user);
+        String token = jwtUtil.generateToken(userDetails, user);
 
         return new AuthResponse(
                 token,
                 user.getId(),
                 user.getEmail(),
-                // ⚠️ role already STRING
-                user.getRole()
+                user.getRole().name() // ✅ ENUM → STRING
         );
     }
 }
