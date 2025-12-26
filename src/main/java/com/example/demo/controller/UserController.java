@@ -25,7 +25,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    // Change PathVariable to String to handle both ID and Email
+    // Fix: Changed Long to String and added logic to check if it's an ID or Email
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable String id) {
         if (id.matches("\\d+")) {
