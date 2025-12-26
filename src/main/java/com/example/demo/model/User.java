@@ -1,51 +1,50 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(
-        name = "users",
-        uniqueConstraints = @UniqueConstraint(columnNames = "email")
-)
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String fullName;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank @Email
+    @Column(unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @NotBlank
     private String password;
 
-    private String role;
+    private String role; // "ADMIN" or "USER"
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
-            name = "user_favorite_vendors",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "vendor_id")
+        name = "user_vendor_favorites",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "vendor_id")
     )
     @Builder.Default
     private Set<Vendor> favoriteVendors = new HashSet<>();
 
     @PrePersist
     public void prePersist() {
-        if (createdAt == null) createdAt = LocalDate.now();
-        if (role == null) role = "USER";
+        this.createdAt = LocalDateTime.now();
+        if (this.role == null) this.role = "USER";
     }
 }

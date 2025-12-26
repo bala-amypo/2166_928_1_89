@@ -1,48 +1,51 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
-
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(
-        name = "invoices",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"vendor_id", "invoiceNumber"})
-)
+@Table(name = "invoices", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"vendor_id", "invoiceNumber"})
+})
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Invoice {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "vendor_id")
+    @JoinColumn(name = "vendor_id", nullable = false)
     private Vendor vendor;
 
-    @Column(nullable = false)
+    @NotBlank
     private String invoiceNumber;
 
-    @Column(nullable = false)
+    @NotNull @Positive
     private Double amount;
 
+    @NotNull
     private LocalDate invoiceDate;
+
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
+    @JoinColumn(name = "uploaded_by_id", nullable = false)
     private User uploadedBy;
 
-    private LocalDate uploadedAt;
+    private LocalDateTime uploadedAt;
 
     @PrePersist
     public void prePersist() {
-        if (uploadedAt == null) uploadedAt = LocalDate.now();
+        this.uploadedAt = LocalDateTime.now();
     }
 }

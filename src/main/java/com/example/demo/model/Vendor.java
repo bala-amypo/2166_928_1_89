@@ -1,30 +1,34 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "vendors")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Vendor {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank
+    @Column(unique = true)
     private String vendorName;
 
+    @NotBlank @Email
     private String contactEmail;
+
     private String address;
-    private LocalDate createdAt;
+
+    private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "favoriteVendors")
     @Builder.Default
@@ -32,6 +36,6 @@ public class Vendor {
 
     @PrePersist
     public void prePersist() {
-        if (createdAt == null) createdAt = LocalDate.now();
+        this.createdAt = LocalDateTime.now();
     }
 }

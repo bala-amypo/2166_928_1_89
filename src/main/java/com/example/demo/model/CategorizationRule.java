@@ -1,41 +1,39 @@
-package com.example.demo.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "categorization_rules")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class CategorizationRule {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Column(nullable = false)
+    @NotBlank
     private String keyword;
 
-    @Enumerated(EnumType.STRING)
-    private MatchType matchType;
+    @NotBlank
+    private String matchType; // "EXACT", "CONTAINS", "REGEX"
 
-    private int priority;
-    private LocalDate createdAt;
+    @Positive
+    private Integer priority;
+
+    private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
-        if (createdAt == null) createdAt = LocalDate.now();
-    }
-
-    // REQUIRED BY TESTS
-    public void setMatchType(String value) {
-        this.matchType = MatchType.fromString(value);
+        this.createdAt = LocalDateTime.now();
     }
 }
