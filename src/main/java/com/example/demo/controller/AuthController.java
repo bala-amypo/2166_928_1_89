@@ -5,30 +5,34 @@ import com.example.demo.dto.AuthResponse;
 import com.example.demo.model.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final UserService userService;
-    private final JwtUtil jwtUtil;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    public AuthController(AuthenticationManager authenticationManager,
-                          UserService userService,
-                          JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-    }
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
 
+        // 🔐 authenticate user
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -36,12 +40,15 @@ public class AuthController {
                 )
         );
 
+        // ✅ load UserDetails (IMPORTANT FIX)
+        UserDetails userDetails =
+                userDetailsService.loadUserByUsername(request.getEmail());
+
+        // ✅ load User entity
         User user = userService.findByEmail(request.getEmail());
 
-        String token = jwtUtil.generateToken(
-                user.getEmail(),
-                user.getRole()
-        );
+        // ✅ generate JWT correctly
+        String token = jwtUtil.generateToken(userDetails, user);
 
         return new AuthResponse(
                 token,
