@@ -24,7 +24,7 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> getOne(@PathVariable String id) {
-        // Accept String, parse to Long
+        // Fix: Parse String to Long
         return ResponseEntity.ok(categoryService.getCategory(Long.valueOf(id)));
     }
 }

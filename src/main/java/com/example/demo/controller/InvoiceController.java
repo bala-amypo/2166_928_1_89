@@ -16,25 +16,25 @@ public class InvoiceController {
     public ResponseEntity<Invoice> uploadInvoice(@PathVariable String userId, 
                                                  @PathVariable String vendorId, 
                                                  @RequestBody Invoice invoice) {
-        // Accept Strings, parse to Long
+        // Fix: Parse Strings to Long
         return ResponseEntity.ok(invoiceService.uploadInvoice(Long.valueOf(userId), Long.valueOf(vendorId), invoice));
     }
 
     @PostMapping("/categorize/{invoiceId}")
     public ResponseEntity<Invoice> categorizeInvoice(@PathVariable String invoiceId) {
-        // Accept String, parse to Long
+        // Fix: Parse String to Long
         return ResponseEntity.ok(invoiceService.categorizeInvoice(Long.valueOf(invoiceId)));
     }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserInvoices(@PathVariable String userId) {
-        // Accept String, parse to Long
+        // Fix: Parse String to Long
         return ResponseEntity.ok(invoiceService.getInvoicesByUser(Long.valueOf(userId)));
     }
 
     @GetMapping("/{invoiceId}")
     public ResponseEntity<Invoice> getInvoice(@PathVariable String invoiceId) {
-        // Accept String, parse to Long
+        // Fix: Parse String to Long
         return ResponseEntity.ok(invoiceService.getInvoice(Long.valueOf(invoiceId)));
     }
 }

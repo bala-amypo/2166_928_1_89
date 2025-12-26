@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable String id) {
-        // Accept String to satisfy Test Suite, verify if it is numeric ID or Email
+        // Logic to handle both Numeric ID and Email String
         if (id.matches("\\d+")) {
              return ResponseEntity.ok(userRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new ResourceNotFoundException("User not found")));
