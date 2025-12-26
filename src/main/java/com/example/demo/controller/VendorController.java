@@ -2,29 +2,38 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Vendor;
 import com.example.demo.service.VendorService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/vendors")
-@RequiredArgsConstructor
 public class VendorController {
+
     private final VendorService vendorService;
 
+    public VendorController(
+            VendorService vendorService
+    ) {
+        this.vendorService = vendorService;
+    }
+
     @PostMapping
-    public ResponseEntity<Vendor> create(@RequestBody Vendor vendor) {
-        return ResponseEntity.ok(vendorService.createVendor(vendor));
+    public Vendor create(
+            @RequestBody Vendor vendor
+    ) {
+        return vendorService.createVendor(vendor);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(vendorService.getAllVendors());
+    public List<Vendor> getAll() {
+        return vendorService.getAllVendors();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Vendor> getOne(@PathVariable String id) {
-        // Fix: Accept String -> Convert to Long
-        return ResponseEntity.ok(vendorService.getVendor(Long.valueOf(id)));
+    @GetMapping("/{vendorId}")
+    public Vendor get(
+            @PathVariable Long vendorId
+    ) {
+        return vendorService.getVendor(vendorId);
     }
 }

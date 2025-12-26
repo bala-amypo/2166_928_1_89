@@ -2,38 +2,42 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.exception.ResourceNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
-    private final UserRepository userRepository;
+
+    public UserController(
+            UserService userService
+    ) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        return ResponseEntity.ok(userService.registerUser(user));
+    public User register(
+            @RequestBody User user
+    ) {
+        return userService.registerUser(user);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public List<User> getAll() {
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable String id) {
-        // Check if the ID string is a number
-        if (id.matches("\\d+")) {
-             return ResponseEntity.ok(userRepository.findById(Long.valueOf(id))
-                .orElseThrow(() -> new ResourceNotFoundException("User not found")));
-        } else {
-             // If not a number, treat as Email
-             return ResponseEntity.ok(userService.findByEmail(id));
-        }
+    public User getById(
+            @PathVariable Long id
+    ) {
+        return userService.getAllUsers()
+                .stream()
+                .filter(u -> u.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }

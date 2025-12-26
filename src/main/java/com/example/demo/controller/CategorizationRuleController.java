@@ -2,32 +2,41 @@ package com.example.demo.controller;
 
 import com.example.demo.model.CategorizationRule;
 import com.example.demo.service.CategorizationRuleService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/rules")
-@RequiredArgsConstructor
 public class CategorizationRuleController {
+
     private final CategorizationRuleService ruleService;
 
+    public CategorizationRuleController(
+            CategorizationRuleService ruleService
+    ) {
+        this.ruleService = ruleService;
+    }
+
     @PostMapping("/category/{categoryId}")
-    public ResponseEntity<CategorizationRule> create(@PathVariable String categoryId, @RequestBody CategorizationRule rule) {
-        // Fix: Accept String -> Convert to Long
-        return ResponseEntity.ok(ruleService.createRule(Long.valueOf(categoryId), rule));
+    public CategorizationRule create(
+            @PathVariable Long categoryId,
+            @RequestBody CategorizationRule rule
+    ) {
+        return ruleService.createRule(categoryId, rule);
     }
 
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<?> getByCat(@PathVariable String categoryId) {
-        // Fix: Accept String -> Convert to Long
-        return ResponseEntity.ok(ruleService.getRulesByCategory(Long.valueOf(categoryId)));
+    public List<CategorizationRule> getByCategory(
+            @PathVariable Long categoryId
+    ) {
+        return ruleService.getRulesByCategory(categoryId);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-        // Fix: Accept String -> Convert to Long
-        ruleService.deleteRule(Long.valueOf(id));
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{ruleId}")
+    public void delete(
+            @PathVariable Long ruleId
+    ) {
+        ruleService.deleteRule(ruleId);
     }
 }
