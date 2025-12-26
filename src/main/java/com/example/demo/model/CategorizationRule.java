@@ -23,47 +23,37 @@ public class CategorizationRule {
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void prePersist() {
+    public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
+    // ===== REQUIRED GETTERS / SETTERS =====
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
-    }
-
-    public MatchType getMatchType() {
-        return matchType;
     }
 
     public void setMatchType(MatchType matchType) {
         this.matchType = matchType;
     }
 
-    public Integer getPriority() {
-        return priority;
-    }
-
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {   // ✅ REQUIRED BY TESTS
-        this.category = category;
+    public MatchType getMatchType() {
+        return matchType;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getKeyword() {
+        return keyword;
     }
 }

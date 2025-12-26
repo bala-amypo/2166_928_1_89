@@ -15,10 +15,25 @@ public class Category {
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void prePersist() {
+    public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    public String getCategoryName() { return categoryName; }
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    // ===== REQUIRED GETTERS / SETTERS =====
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

@@ -8,9 +8,7 @@ import java.util.Set;
 @Entity
 @Table(
     name = "users",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-    }
+    uniqueConstraints = @UniqueConstraint(columnNames = "email")
 )
 public class User {
 
@@ -23,7 +21,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.USER;
 
     private LocalDateTime createdAt;
 
@@ -31,21 +29,49 @@ public class User {
     private Set<Vendor> favoriteVendors = new HashSet<>();
 
     @PrePersist
-    public void prePersist() {
+    public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ===== REQUIRED GETTERS / SETTERS =====
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
+    public String getEmail() {
+        return email;
+    }
 
-    public Set<Vendor> getFavoriteVendors() { return favoriteVendors; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Set<Vendor> getFavoriteVendors() {
+        return favoriteVendors;
+    }
 }
