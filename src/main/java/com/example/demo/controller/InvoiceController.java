@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class InvoiceController {
     private final InvoiceService invoiceService;
 
+    // Changed userId and vendorId to String
     @PostMapping("/upload/{userId}/{vendorId}")
     public ResponseEntity<Invoice> uploadInvoice(@PathVariable String userId, 
                                                  @PathVariable String vendorId, 
@@ -19,16 +20,19 @@ public class InvoiceController {
         return ResponseEntity.ok(invoiceService.uploadInvoice(Long.valueOf(userId), Long.valueOf(vendorId), invoice));
     }
 
+    // Changed invoiceId to String
     @PostMapping("/categorize/{invoiceId}")
     public ResponseEntity<Invoice> categorizeInvoice(@PathVariable String invoiceId) {
         return ResponseEntity.ok(invoiceService.categorizeInvoice(Long.valueOf(invoiceId)));
     }
 
+    // Changed userId to String
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getUserInvoices(@PathVariable String userId) {
         return ResponseEntity.ok(invoiceService.getInvoicesByUser(Long.valueOf(userId)));
     }
 
+    // Changed invoiceId to String
     @GetMapping("/{invoiceId}")
     public ResponseEntity<Invoice> getInvoice(@PathVariable String invoiceId) {
         return ResponseEntity.ok(invoiceService.getInvoice(Long.valueOf(invoiceId)));
