@@ -22,6 +22,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
+    // Change PathVariable to String
     @GetMapping("/{id}")
     public ResponseEntity<Category> getOne(@PathVariable String id) {
         return ResponseEntity.ok(categoryService.getCategory(Long.valueOf(id)));

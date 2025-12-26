@@ -22,6 +22,7 @@ public class VendorController {
         return ResponseEntity.ok(vendorService.getAllVendors());
     }
 
+    // Change PathVariable to String
     @GetMapping("/{id}")
     public ResponseEntity<Vendor> getOne(@PathVariable String id) {
         return ResponseEntity.ok(vendorService.getVendor(Long.valueOf(id)));
