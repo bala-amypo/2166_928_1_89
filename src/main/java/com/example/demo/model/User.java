@@ -2,9 +2,14 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        uniqueConstraints = @UniqueConstraint(columnNames = "email")
+)
 public class User {
 
     @Id
@@ -17,15 +22,19 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
+    @ManyToMany
+    private Set<Vendor> favoriteVendors = new HashSet<>();
+
     private LocalDateTime createdAt;
 
-    // REQUIRED BY TESTS
+    // ---------- REQUIRED BY TESTS ----------
     public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 
-    // ===== GETTERS & SETTERS =====
-
+    // ---------- GETTERS / SETTERS ----------
     public Long getId() {
         return id;
     }
@@ -42,17 +51,30 @@ public class User {
         this.email = email;
     }
 
+    // REQUIRED
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Role getRole() {
         return role;
     }
 
-    // STRING ACCEPTOR (REQUIRED)
+    // STRING SUPPORT REQUIRED BY TESTS
     public void setRole(String role) {
         this.role = Role.valueOf(role);
     }
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Set<Vendor> getFavoriteVendors() {
+        return favoriteVendors;
     }
 
     public LocalDateTime getCreatedAt() {

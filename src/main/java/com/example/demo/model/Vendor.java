@@ -16,11 +16,24 @@ public class Vendor {
     @ManyToMany(mappedBy = "favoriteVendors")
     private Set<User> users = new HashSet<>();
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ---------- GETTERS / SETTERS ----------
+    public Long getId() {
+        return id;
+    }
 
-    public String getVendorName() { return vendorName; }
-    public void setVendorName(String vendorName) { this.vendorName = vendorName; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Set<User> getUsers() { return users; }
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
 }

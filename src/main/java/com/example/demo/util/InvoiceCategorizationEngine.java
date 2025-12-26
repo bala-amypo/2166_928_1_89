@@ -1,31 +1,27 @@
 package com.example.demo.util;
 
 import com.example.demo.model.*;
+
+import java.util.Comparator;
 import java.util.List;
 
 public class InvoiceCategorizationEngine {
 
     public Category determineCategory(Invoice invoice, List<CategorizationRule> rules) {
+        return rules.stream()
+                .filter(r -> match(invoice.getDescription(), r))
+                .max(Comparator.comparing(CategorizationRule::getPriority))
+                .map(CategorizationRule::getCategory)
+                .orElse(null);
+    }
 
-        String description = invoice.getDescription();
+    private boolean match(String desc, CategorizationRule rule) {
+        if (desc == null) return false;
 
-        for (CategorizationRule rule : rules) {
-
-            if (rule.getMatchType() == MatchType.EXACT &&
-                description.equalsIgnoreCase(rule.getKeyword())) {
-                return rule.getCategory();
-            }
-
-            if (rule.getMatchType() == MatchType.CONTAINS &&
-                description.toLowerCase().contains(rule.getKeyword().toLowerCase())) {
-                return rule.getCategory();
-            }
-
-            if (rule.getMatchType() == MatchType.REGEX &&
-                description.matches(rule.getKeyword())) {
-                return rule.getCategory();
-            }
-        }
-        return null;
+        return switch (rule.getMatchType()) {
+            case EXACT -> desc.equalsIgnoreCase(rule.getKeyword());
+            case CONTAINS -> desc.toLowerCase().contains(rule.getKeyword().toLowerCase());
+            case REGEX -> desc.matches(rule.getKeyword());
+        };
     }
 }

@@ -22,40 +22,28 @@ public class CategorizationRule {
 
     private LocalDateTime createdAt;
 
-    // REQUIRED BY TESTS
+    // REQUIRED
     public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 
-    // STRING ACCEPTOR (REQUIRED)
-    public void setMatchType(String type) {
-        this.matchType = MatchType.valueOf(type);
-    }
-
-    public void setMatchType(MatchType type) {
-        this.matchType = type;
-    }
-
-    // ===== GETTERS & SETTERS =====
-
-    public MatchType getMatchType() {
-        return matchType;
+    // ---------- GETTERS / SETTERS ----------
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public String getKeyword() {
         return keyword;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     public Integer getPriority() {
         return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
     }
 
     public void setCategory(Category category) {
@@ -64,6 +52,15 @@ public class CategorizationRule {
 
     public Category getCategory() {
         return category;
+    }
+
+    // STRING SUPPORT REQUIRED
+    public void setMatchType(String type) {
+        this.matchType = MatchType.valueOf(type);
+    }
+
+    public MatchType getMatchType() {
+        return matchType;
     }
 
     public LocalDateTime getCreatedAt() {

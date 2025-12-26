@@ -13,13 +13,14 @@ public class Category {
     private String categoryName;
     private LocalDateTime createdAt;
 
-    // REQUIRED BY TESTS
+    // REQUIRED
     public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 
-    // ===== GETTERS & SETTERS =====
-
+    // ---------- GETTERS / SETTERS ----------
     public Long getId() {
         return id;
     }
@@ -28,8 +29,8 @@ public class Category {
         return categoryName;
     }
 
-    public void setCategoryName(String name) {
-        this.categoryName = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public LocalDateTime getCreatedAt() {
