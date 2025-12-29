@@ -17,27 +17,29 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
 
         return new OpenAPI()
+                // Server configuration
+                .servers(List.of(
+                        new Server()
+                                .url("https://9180.408procr.amypo.ai")
+                                .description("Deployed Server")
+                ))
 
-            
-            .servers(List.of(
-                new Server().url("https://9180.408procr.amypo.ai/")
-            ))
+                // Security requirement (applies globally)
+                .addSecurityItem(
+                        new SecurityRequirement().addList("BearerAuth")
+                )
 
-            
-            .addSecurityItem(
-                new SecurityRequirement().addList("BearerAuth")
-            )
-
-            .components(
-                new Components()
-                    .addSecuritySchemes(
-                        "BearerAuth",
-                        new SecurityScheme()
-                            .name("Authorization")
-                            .type(SecurityScheme.Type.HTTP)
-                            .scheme("bearer")
-                            .bearerFormat("JWT")
-                    )
-            );
+                // Security scheme definition
+                .components(
+                        new Components()
+                                .addSecuritySchemes(
+                                        "BearerAuth",
+                                        new SecurityScheme()
+                                                .name("Authorization")
+                                                .type(SecurityScheme.Type.HTTP)
+                                                .scheme("bearer")
+                                                .bearerFormat("JWT")
+                                )
+                );
     }
 }
