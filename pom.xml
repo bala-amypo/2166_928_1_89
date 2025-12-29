@@ -93,7 +93,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- 🔥🔥 SWAGGER / OPENAPI (ONLY ADDITION) 🔥🔥 -->
+        
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
